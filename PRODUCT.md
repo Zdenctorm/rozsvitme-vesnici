@@ -30,7 +30,7 @@ The only place that shows tonight's lit windows across the whole country, with e
 ## Operating Context
 
 - Launch 20 Nov 2026, organizers enter data until 30 Nov, lighting 1 to 24 Dec, all data deleted in January 2027.
-- States per house: hidden, today visible from 8:00, Svítí during lighting hours, Doutná after its day until 24 Dec. Calendars before 1 Dec are Čeká, shown as small stars with the number of filled windows.
+- States per house: hidden, today visible from 8:00, Svítí from dusk, sunset in Prague, until midnight, Doutná after its day until 24 Dec. No per-calendar lighting times. Calendars before 1 Dec are Čeká, shown as small stars with the number of filled windows.
 - Navigation opens Mapy.com, Google Maps or Apple Maps through plain links.
 - Print: A4 QR poster and A5 stamp card, two per A4 sheet, 24 fields, generated in the browser as PDF, same look for every calendar, must print in black and white.
 - Known real examples: Rádlo, Strážnice, Rouchovany.

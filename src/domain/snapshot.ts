@@ -14,18 +14,6 @@ export interface Point {
   lng: number;
 }
 
-/** Wall-clock time in Europe/Prague, "HH:MM", 24 h. */
-export type ClockTime = string;
-
-/**
- * When the houses of a calendar are lit on their window day. `from` inclusive, `to` exclusive.
- * Both fall on the same day: hours past midnight are not supported.
- */
-export interface LightingHours {
-  from: ClockTime;
-  to: ClockTime;
-}
-
 /**
  * Where the season stands.
  * - `upcoming`: before 1 Dec, calendars only, no houses.
@@ -36,8 +24,8 @@ export type SnapshotPhase = 'upcoming' | 'advent' | 'over';
 
 /**
  * State of a house in the snapshot.
- * - `today`: its window is today, visible from 08:00, outside lighting hours.
- * - `lit`: its window is today and the calendar's lighting hours are on.
+ * - `today`: its window is today, visible from 08:00 until dusk.
+ * - `lit`: its window is today, from dusk until Prague midnight.
  * - `past`: its window is over. Shown as a faint light at its exact point.
  */
 export type HouseState = 'today' | 'lit' | 'past';
@@ -51,7 +39,6 @@ export interface SnapshotCalendar {
   municipality: string;
   /** Where the calendar's star sits on the map before 1 Dec. */
   point: Point;
-  lightingHours: LightingHours;
   /** Number of windows 1 to 24 that have at least one house. */
   filledWindows: number;
 }
@@ -70,12 +57,17 @@ export interface SnapshotHouse {
 }
 
 export interface Snapshot {
-  /** Format version. Bump on breaking change. */
-  version: 1;
+  /** Format version. Bump on breaking change. 2: no per-calendar lighting hours, adds `duskAt`. */
+  version: 2;
   /** Instant the snapshot was built, ISO 8601 UTC. */
   generatedAt: string;
   /** Date in Europe/Prague the snapshot was built on, "YYYY-MM-DD". */
   today: string;
+  /**
+   * Dusk on `today`: sunset in Prague, ISO 8601 UTC. Today's house is lit from this instant
+   * until Prague midnight, and the map switches to night mode.
+   */
+  duskAt: string;
   phase: SnapshotPhase;
   /** Every calendar that is not hidden, sorted by slug. */
   calendars: SnapshotCalendar[];

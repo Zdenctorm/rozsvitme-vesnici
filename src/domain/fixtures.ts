@@ -57,7 +57,6 @@ const samples: SampleCalendar[] = [
       municipality: 'Strážnice',
       point: { lat: 48.8999, lng: 17.3171 },
       hidden: false,
-      lightingHours: { from: '16:30', to: '19:30' },
       organizer: { email: 'advent@straznice.example.org' },
     },
     windows: [
@@ -95,7 +94,6 @@ const samples: SampleCalendar[] = [
       municipality: 'Rouchovany',
       point: { lat: 49.0705, lng: 16.1078 },
       hidden: false,
-      lightingHours: { from: '17:30', to: '20:30' },
       organizer: { email: 'okenka@rouchovany.example.org', name: 'Ukázková organizátorka' },
     },
     windows: [
@@ -159,7 +157,7 @@ export const sampleHouses: HouseRecord[] = samples.flatMap(({ calendar, windows 
   }),
 );
 
-/** 12 Dec 2026, 17:15 in Prague: Rádlo and Strážnice lit, Rouchovany lights up at 17:30. */
+/** 12 Dec 2026, 17:15 in Prague, after dusk at about 16:00: window 12 lit, earlier windows past. */
 export const SAMPLE_EVENING = new Date('2026-12-12T16:15:00Z');
 
 /** The public snapshot of the sample data at `now`. Defaults to a December evening. */

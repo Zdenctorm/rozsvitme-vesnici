@@ -13,10 +13,15 @@ describe('sample snapshot for map development', () => {
     }
   });
 
-  it('on a December evening shows lit, today and past houses, with some empty windows', () => {
+  it('on a December afternoon shows today and past houses, nothing lit before dusk', () => {
+    const { houses } = sampleSnapshot(new Date('2026-12-12T13:00:00Z'));
+    expect(new Set(houses.map((h) => h.state))).toEqual(new Set(['today', 'past']));
+  });
+
+  it('on a December evening shows lit and past houses, with some empty windows', () => {
     const { houses, phase } = sampleSnapshot(new Date('2026-12-12T16:15:00Z'));
     expect(phase).toBe('advent');
-    expect(new Set(houses.map((h) => h.state))).toEqual(new Set(['lit', 'today', 'past']));
+    expect(new Set(houses.map((h) => h.state))).toEqual(new Set(['lit', 'past']));
     expect(houses.every((h) => h.window <= 12)).toBe(true);
     for (const c of sampleCalendars) {
       expect(c.hidden).toBe(false);

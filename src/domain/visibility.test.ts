@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { pragueDusk } from './sun';
 import { buildSnapshot, type CalendarRecord, type HouseRecord } from './visibility';
 
 const radlo: CalendarRecord = {
@@ -29,6 +30,20 @@ const prague = (local: string) => new Date(`${local}+01:00`);
 const visible = (now: Date, houses: HouseRecord[], calendars = [radlo]) =>
   buildSnapshot(calendars, houses, now).houses.map((h) => [h.window, h.state]);
 
+describe('dusk', () => {
+  it("is in the snapshot as today's Prague sunset, so the map can switch to night", () => {
+    const snapshot = buildSnapshot([radlo], [], prague('2026-12-24T09:00:00'));
+    expect(snapshot.duskAt).toBe(pragueDusk('2026-12-24').toISOString());
+    const reference = Date.parse('2026-12-24T15:03:53Z');
+    expect(Math.abs(Date.parse(snapshot.duskAt) - reference)).toBeLessThan(2 * 60_000);
+  });
+
+  it('follows the Prague date, not the UTC date, just after Prague midnight', () => {
+    // 23:30 UTC on 5 Dec is 00:30 on 6 Dec in Prague.
+    expect(buildSnapshot([radlo], [], new Date('2026-12-05T23:30:00Z')).duskAt).toBe(pragueDusk('2026-12-06').toISOString());
+  });
+});
+
 describe('before 1 Dec', () => {
   it('shows calendars as upcoming with their filled window count and no houses', () => {
     const snapshot = buildSnapshot([radlo], [house(1), house(2), house(5)], prague('2026-11-25T19:00:00'));
@@ -42,7 +57,6 @@ describe('before 1 Dec', () => {
         name: 'Adventní Rádlo',
         municipality: 'Rádlo',
         point: { lat: 50.698, lng: 15.109 },
-        lightingHours: { from: '17:00', to: '20:00' },
         filledWindows: 3,
       },
     ]);
@@ -58,23 +72,22 @@ describe("today's house", () => {
     expect(visible(prague('2026-12-03T08:00:00'), [house(3)])).toEqual([[3, 'today']]);
   });
 
-  it('is lit from the start of lighting hours', () => {
-    expect(visible(prague('2026-12-03T16:59:59'), [house(3)])).toEqual([[3, 'today']]);
-    expect(visible(prague('2026-12-03T17:00:00'), [house(3)])).toEqual([[3, 'lit']]);
-    expect(visible(prague('2026-12-03T19:59:59'), [house(3)])).toEqual([[3, 'lit']]);
+  it('is lit from dusk, sunset in Prague, to the minute', () => {
+    const dusk = pragueDusk('2026-12-03');
+    const minute = 60_000;
+    expect(visible(new Date(dusk.getTime() - minute), [house(3)])).toEqual([[3, 'today']]);
+    expect(visible(dusk, [house(3)])).toEqual([[3, 'lit']]);
+    expect(visible(new Date(dusk.getTime() + minute), [house(3)])).toEqual([[3, 'lit']]);
   });
 
-  it('stops being lit when lighting hours end, but stays visible until midnight', () => {
-    expect(visible(prague('2026-12-03T20:00:00'), [house(3)])).toEqual([[3, 'today']]);
-    expect(visible(prague('2026-12-03T23:59:59'), [house(3)])).toEqual([[3, 'today']]);
+  it('dusk on 3 Dec falls at about 16:02 in Prague', () => {
+    expect(visible(prague('2026-12-03T15:55:00'), [house(3)])).toEqual([[3, 'today']]);
+    expect(visible(prague('2026-12-03T16:10:00'), [house(3)])).toEqual([[3, 'lit']]);
   });
 
-  it("follows the calendar's own lighting hours", () => {
-    const late = { ...radlo, lightingHours: { from: '18:30', to: '21:15' } };
-    expect(visible(prague('2026-12-03T18:29:00'), [house(3)], [late])).toEqual([[3, 'today']]);
-    expect(visible(prague('2026-12-03T18:30:00'), [house(3)], [late])).toEqual([[3, 'lit']]);
-    expect(visible(prague('2026-12-03T21:14:00'), [house(3)], [late])).toEqual([[3, 'lit']]);
-    expect(visible(prague('2026-12-03T21:15:00'), [house(3)], [late])).toEqual([[3, 'today']]);
+  it('stays lit until Prague midnight, then turns past', () => {
+    expect(visible(prague('2026-12-03T23:59:59'), [house(3)])).toEqual([[3, 'lit']]);
+    expect(visible(prague('2026-12-04T00:00:00'), [house(3)])).toEqual([[3, 'past']]);
   });
 
   it('carries its public fields', () => {

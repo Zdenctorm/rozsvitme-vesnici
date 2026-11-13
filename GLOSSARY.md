@@ -19,10 +19,10 @@ The household behind a **Domeček**. Never logs in. Their consent is confirmed b
 The person who creates and edits a **Kalendář**. Logs in with an email magic link.
 
 **Svítí**, `lit`:
-A **Domeček** is lit on its **Okénko** day during the calendar's lighting hours. Default lighting hours are set per calendar and editable.
+A **Domeček** on its **Okénko** day from dusk until Prague midnight. Dusk is sunset in Prague that day, the same for every **Kalendář**: at about 16:00 the map turns to night and today's houses light up. There are no per-calendar times; hosts prepare the window in the afternoon and people come whenever they like.
 
 **Dnes**, `today`:
-A **Domeček** on its **Okénko** day outside lighting hours: visible from 08:00 at its exact point with navigation, not yet glowing, and after lighting hours until Prague midnight.
+A **Domeček** on its **Okénko** day from 08:00 until dusk: visible at its exact point with navigation and a warm mark on the day map, not yet glowing.
 
 **Doutná**, `past`:
 A **Domeček** whose **Okénko** is over. Stays on the map as a faint light at its exact point until 24 Dec. All data is deleted in January 2027.
