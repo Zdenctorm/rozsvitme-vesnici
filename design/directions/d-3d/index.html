@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#070b14" />
+    <title>Adventní okénka</title>
+    <link rel="stylesheet" href="./fonts.css" />
+  </head>
+  <body>
+    <div id="map" aria-label="Mapa adventních okének"></div>
+
+    <header class="top">
+      <label class="search glass">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6" /><path d="M12.8 12.8 17 17" /></svg>
+        <input id="search" type="search" autocomplete="off" spellcheck="false" />
+      </label>
+      <ul id="results" class="results glass" hidden></ul>
+    </header>
+
+    <button id="locate" class="locate glass" type="button">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M17 3 3 9.2l6.1 1.7L10.8 17Z" /></svg>
+    </button>
+
+    <section id="sheet" class="sheet glass" aria-live="polite">
+      <div class="grabber" aria-hidden="true"></div>
+      <div id="sheet-body"></div>
+      <p class="credit">Mapa © OpenFreeMap, data © přispěvatelé OpenStreetMap</p>
+    </section>
+
+    <div id="scrim" class="scrim" hidden></div>
+    <section id="nav" class="nav" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="nav-title" hidden></section>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
