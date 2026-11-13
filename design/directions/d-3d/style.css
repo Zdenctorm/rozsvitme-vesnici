@@ -1,5 +1,21 @@
+/* Theme colours are registered so the dusk switch can glide instead of jump. */
+@property --page { syntax: '<color>'; inherits: true; initial-value: #070b14; }
+@property --ink { syntax: '<color>'; inherits: true; initial-value: #f2f4f8; }
+@property --ink-2 { syntax: '<color>'; inherits: true; initial-value: #aab3c5; }
+@property --ink-3 { syntax: '<color>'; inherits: true; initial-value: #7c869b; }
+@property --line { syntax: '<color>'; inherits: true; initial-value: rgba(255, 255, 255, 0.08); }
+@property --glass { syntax: '<color>'; inherits: true; initial-value: rgba(16, 21, 33, 0.74); }
+@property --glass-solid { syntax: '<color>'; inherits: true; initial-value: rgba(28, 33, 46, 0.94); }
+@property --chip { syntax: '<color>'; inherits: true; initial-value: rgba(14, 18, 28, 0.86); }
+@property --warm-text { syntax: '<color>'; inherits: true; initial-value: #ffd28a; }
+@property --program { syntax: '<color>'; inherits: true; initial-value: #f6dfbc; }
+@property --door { syntax: '<color>'; inherits: true; initial-value: rgba(214, 226, 250, 0.09); }
+@property --door-edge { syntax: '<color>'; inherits: true; initial-value: rgba(214, 226, 250, 0.14); }
+@property --door-inside { syntax: '<color>'; inherits: true; initial-value: rgba(0, 0, 0, 0.35); }
+@property --ember { syntax: '<color>'; inherits: true; initial-value: rgba(255, 166, 64, 0.42); }
+
 :root {
-  --night: #070b14;
+  --page: #070b14;
   --ink: #f2f4f8;
   --ink-2: #aab3c5;
   --ink-3: #7c869b;
@@ -8,12 +24,44 @@
   --glass-solid: rgba(28, 33, 46, 0.94);
   --warm: #ffb24d;
   --warm-hi: #ffd28a;
+  --warm-text: #ffd28a;
+  --program: #f6dfbc;
+  --chip: rgba(14, 18, 28, 0.86);
+  --door: rgba(214, 226, 250, 0.09);
+  --door-edge: rgba(214, 226, 250, 0.14);
+  --door-inside: rgba(0, 0, 0, 0.35);
+  --ember: rgba(255, 166, 64, 0.42);
   --warm-ink: #1c1206;
   --blue: #3d8bff;
   --r-sheet: 28px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --font: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --dusk: 3.2s cubic-bezier(0.65, 0, 0.35, 1);
+  --font: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Instrument Sans', ui-sans-serif, sans-serif;
   color-scheme: dark;
+  transition:
+    --page var(--dusk), --ink var(--dusk), --ink-2 var(--dusk), --ink-3 var(--dusk), --line var(--dusk),
+    --glass var(--dusk), --glass-solid var(--dusk), --chip var(--dusk), --warm-text var(--dusk),
+    --program var(--dusk), --door var(--dusk), --door-edge var(--dusk), --door-inside var(--dusk), --ember var(--dusk);
+}
+
+/* Day: a pale winter morning for planning the evening. Set by the clock in Prague, never by the system theme. */
+:root[data-theme='day'] {
+  --page: #e8ecf1;
+  --ink: #161c28;
+  --ink-2: #485164;
+  --ink-3: #5f6879;
+  --line: rgba(22, 32, 52, 0.1);
+  --glass: rgba(248, 250, 252, 0.84);
+  --glass-solid: rgba(250, 251, 252, 0.97);
+  --chip: rgba(255, 255, 255, 0.94);
+  --warm-text: #9a520c;
+  --program: #5a3a14;
+  --door: #ffffff;
+  --door-edge: rgba(30, 44, 70, 0.16);
+  --door-inside: rgba(30, 44, 70, 0.12);
+  --ember: rgba(222, 140, 50, 0.45);
+  color-scheme: light;
 }
 
 * {
@@ -24,10 +72,10 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: var(--night);
+  background: var(--page);
   color: var(--ink);
   font-family: var(--font);
-  font-feature-settings: 'tnum' 0;
+  font-stretch: 96%;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;
@@ -86,6 +134,12 @@ button {
   box-shadow:
     inset 0 0.5px 0 rgba(255, 255, 255, 0.1),
     0 10px 30px -8px rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme='day'] .glass {
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.9),
+    0 10px 30px -10px rgba(30, 44, 70, 0.28);
 }
 
 .glass-solid {
@@ -221,10 +275,12 @@ button {
 
 .h1 {
   margin: 0;
-  font-size: 24px;
+  font-family: var(--font-display);
+  font-size: 25px;
   font-weight: 650;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
+  letter-spacing: -0.018em;
+  line-height: 1.12;
+  text-wrap: balance;
 }
 
 .sub {
@@ -270,19 +326,6 @@ button {
   text-wrap: balance;
 }
 
-.row-count {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  line-height: 1.15;
-}
-
-.row-count b {
-  color: var(--ink);
-  font-size: 20px;
-  font-weight: 600;
-}
-
 .row-sub {
   color: var(--ink-2);
   font-size: 14px;
@@ -297,43 +340,10 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-.row-state.is-lit {
-  color: var(--warm-hi);
-  font-weight: 550;
-}
-
-/* Window mark */
-.wmark {
-  flex: none;
-  overflow: visible;
-}
-
-.wmark rect {
-  stroke-width: 1.6;
-}
-
-.wmark path {
-  stroke-width: 1.5;
-  fill: none;
-}
-
-.wmark.is-lit rect {
-  fill: var(--warm-hi);
-  stroke: #ffe7bd;
-  filter: drop-shadow(0 0 5px rgba(255, 166, 64, 0.85));
-}
-
-.wmark.is-lit path {
-  stroke: #9a5a15;
-}
-
-.wmark.is-dark rect {
-  fill: rgba(255, 210, 138, 0.06);
-  stroke: #b8875a;
-}
-
-.wmark.is-dark path {
-  stroke: #b8875a;
+.row-state.is-lit,
+.row-state.is-today {
+  color: var(--warm-text);
+  font-weight: 600;
 }
 
 /* Peek */
@@ -364,9 +374,10 @@ button {
 }
 
 .peek-title {
-  font-size: 21px;
+  font-family: var(--font-display);
+  font-size: 22px;
   font-weight: 650;
-  letter-spacing: -0.022em;
+  letter-spacing: -0.015em;
   line-height: 1.2;
 }
 
@@ -397,9 +408,18 @@ button {
   gap: 7px;
 }
 
-.live.is-lit {
-  color: var(--warm-hi);
-  font-weight: 550;
+.live.is-lit,
+.live.is-today {
+  color: var(--warm-text);
+  font-weight: 600;
+}
+
+.live.is-today::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--warm);
 }
 
 .live.is-lit::before {
@@ -420,11 +440,12 @@ button {
 }
 
 .title {
+  font-family: var(--font-display);
   margin: 2px 0 0;
-  font-size: 30px;
-  font-weight: 680;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
+  font-size: 31px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
   text-wrap: balance;
 }
 
@@ -464,8 +485,9 @@ button {
   margin: 16px 0 0;
   padding-top: 16px;
   border-top: 1px solid var(--line);
-  color: #f6dfbc;
-  font-size: 19px;
+  color: var(--program);
+  font-family: var(--font-display);
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.012em;
   line-height: 1.35;
@@ -506,20 +528,11 @@ button {
 
 .credit {
   margin: 10px 0 0;
-  color: #707a92;
+  color: #7a849b;
   font-size: 11px;
 }
 
 /* Waiting */
-.countdown {
-  margin: 0;
-  font-size: 40px;
-  font-weight: 680;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
-  font-variant-numeric: tabular-nums;
-}
-
 .list-title {
   margin: 18px 0 2px;
   color: var(--ink-2);
@@ -552,41 +565,51 @@ button {
   transition: opacity 0.6s var(--ease-out);
 }
 
-.is-near .pin {
+.is-near .pin:not(.pin-past) {
   pointer-events: auto;
 }
 
-.is-near .pin-inner,
-.is-near .me {
+.is-near .pin:not(.pin-past) .pin-inner,
+.is-near .me,
+.is-far .me {
   opacity: 1;
 }
 
+.pin-head {
+  position: relative;
+}
+
+/* The label hangs to the right, so the door stands right above its point. */
 .pin-label {
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 12px 7px 9px;
+  padding: 6px 11px;
   border-radius: 12px;
-  background: rgba(14, 18, 28, 0.86);
+  background: var(--chip);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   color: var(--ink);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   white-space: nowrap;
   box-shadow:
     inset 0 0 0 0.5px rgba(255, 220, 160, 0.25),
     0 6px 16px -6px rgba(0, 0, 0, 0.7);
 }
 
-.pin.is-today .pin-label {
-  color: var(--ink-2);
+/* Day: today's house carries a warm marker, not yet a glow. */
+.pin.is-today .pin-stem {
+  background: linear-gradient(#e0892e, rgba(224, 137, 46, 0.2));
 }
 
 .pin-stem {
   width: 1.5px;
-  height: 34px;
+  height: 26px;
   background: linear-gradient(rgba(255, 214, 150, 0.85), rgba(255, 214, 150, 0.15));
 }
 
@@ -600,8 +623,31 @@ button {
 }
 
 .pin.is-today .pin-dot {
-  background: #c99a62;
-  box-shadow: none;
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  background: #ffb24d;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 2px 6px rgba(30, 44, 70, 0.35);
+}
+
+:root[data-theme='day'] .pin-label {
+  box-shadow:
+    inset 0 0 0 0.5px rgba(30, 44, 70, 0.14),
+    0 6px 16px -6px rgba(30, 44, 70, 0.35);
+}
+
+:root[data-theme='day'] .peek-mark {
+  background: radial-gradient(circle at 50% 55%, rgba(255, 170, 70, 0.3), rgba(255, 170, 70, 0.06) 70%);
+}
+
+:root[data-theme='day'] .close .icon {
+  background: rgba(22, 32, 52, 0.08);
+}
+
+:root[data-theme='day'] .credit {
+  color: #6b7486;
 }
 
 /* User location */
@@ -727,6 +773,315 @@ button {
 }
 
 /* ---------- larger screens ---------- */
+
+/* Past doors appear only close in, where they do not crowd tonight's. */
+.pin-past .pin-inner {
+  margin-bottom: 0;
+}
+
+.pin-past .pin-stem {
+  height: 8px;
+  background: linear-gradient(rgba(255, 214, 150, 0.45), rgba(255, 214, 150, 0));
+}
+
+.is-close .pin-past .pin-inner {
+  opacity: 1;
+}
+
+/* ---------- house door mark ---------- */
+
+/*
+ * A little advent calendar door with the day number. Shut by day with a warm frame,
+ * open and glowing after sunset, small and dim once its day is over.
+ */
+.door {
+  --dw: 34px;
+  --dh: 40px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--dw);
+  height: var(--dh);
+  flex: none;
+  border-radius: 11px 11px 5px 5px;
+  perspective: 120px;
+  background: #3a2a1c;
+  box-shadow:
+    0 0 0 2px #e0892e,
+    0 6px 14px -6px rgba(0, 0, 0, 0.6);
+}
+
+.door-leaf {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 38%),
+    #fbefdc;
+  box-shadow: inset 0 0 0 1px rgba(160, 90, 20, 0.25);
+  transform-origin: 0 50%;
+  transition:
+    transform 1.6s var(--ease-out),
+    opacity 1.6s var(--ease-out);
+}
+
+.door b {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 650;
+  font-variant-numeric: lining-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #7a4210;
+  transition: color 1.6s var(--ease-out);
+}
+
+/* After sunset: the door swings open and the window behind it glows. */
+.door.is-lit {
+  background: radial-gradient(circle at 55% 58%, #fff6e4, #ffc46e 52%, #ff9636);
+  box-shadow:
+    0 0 0 1.5px #ffd28a,
+    0 0 22px 4px rgba(255, 150, 50, 0.6),
+    0 6px 14px -6px rgba(0, 0, 0, 0.6);
+}
+
+.door.is-lit .door-leaf,
+.door.is-past .door-leaf {
+  transform: rotateY(-74deg);
+}
+
+.door.is-lit b {
+  color: #4a2606;
+}
+
+.door.is-past {
+  background: radial-gradient(circle at 55% 60%, rgba(255, 170, 70, 0.4), rgba(255, 170, 70, 0.08) 80%), #1a1712;
+  box-shadow: 0 0 0 1px rgba(224, 160, 90, 0.5);
+}
+
+.door.is-past .door-leaf {
+  opacity: 0.35;
+}
+
+.door.is-past b {
+  color: #e6c398;
+}
+
+:root[data-theme='day'] .door.is-past {
+  background: radial-gradient(circle at 55% 60%, rgba(224, 137, 46, 0.3), rgba(224, 137, 46, 0.06) 80%), #f6efe5;
+  box-shadow: 0 0 0 1px rgba(196, 122, 44, 0.55);
+}
+
+:root[data-theme='day'] .door.is-past b {
+  color: #8a4f12;
+}
+
+.door-row {
+  --dw: 26px;
+  --dh: 31px;
+  border-radius: 9px 9px 4px 4px;
+}
+
+.door-row b {
+  font-size: 13.5px;
+}
+
+.door-past {
+  --dw: 22px;
+  --dh: 26px;
+  border-radius: 8px 8px 3px 3px;
+}
+
+.door-past b {
+  font-size: 11.5px;
+}
+
+.row .door-row {
+  margin: 0 2px;
+}
+
+.row .door.is-lit {
+  box-shadow:
+    0 0 0 1.5px #ffd28a,
+    0 0 12px 1px rgba(255, 150, 50, 0.5);
+}
+
+/* Halfway through the swing, for the close-up only. */
+.door.is-dusk {
+  background: radial-gradient(circle at 55% 58%, #ffe9c4, #ffb65a 60%, #e0802a);
+  box-shadow:
+    0 0 0 1.75px #f0a24a,
+    0 0 12px 1px rgba(255, 150, 50, 0.4);
+}
+
+.door.is-dusk .door-leaf {
+  transform: rotateY(-38deg);
+}
+
+.door.is-dusk b {
+  color: #5a3008;
+}
+
+.specimen {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin: 0;
+}
+
+.spec-day {
+  background: #e8ecf1;
+}
+
+.spec-dusk {
+  background: linear-gradient(180deg, #4b5672, #1a2236);
+}
+
+.spec-night {
+  background: #070b14;
+}
+
+.spec-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(2.6);
+  transform-origin: 50% 70%;
+}
+
+.spec figcaption {
+  margin-top: 40px;
+  font-size: 15px;
+  font-weight: 550;
+  color: #aab3c5;
+}
+
+.spec-day figcaption {
+  color: #485164;
+}
+
+/* ---------- advent doors ---------- */
+
+/*
+ * The 24 days as small calendar doors in two rows of twelve. Past days stand open,
+ * today's door is open and glowing, the days ahead stay shut and frosted.
+ */
+.days {
+  display: grid;
+  grid-template-columns: repeat(12, 22px);
+  grid-auto-rows: 24px;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.days i {
+  position: relative;
+  font-style: normal;
+  border-radius: 5px 5px 3px 3px;
+  background: var(--door-inside);
+  box-shadow: inset 0 0 0 0.5px var(--door-edge);
+  perspective: 70px;
+}
+
+/* The door leaf, hinged on the left. */
+.days i::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 45%),
+    var(--door);
+  box-shadow: inset 0 0 0 0.5px var(--door-edge);
+  transform-origin: 0 50%;
+}
+
+/* The day number, printed on the shut door and still there once it stands open. */
+.days b {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+.days .is-past b,
+.days .is-empty b {
+  color: var(--ink-3);
+  opacity: 0.8;
+}
+
+.days .is-past b {
+  color: var(--warm-text);
+  opacity: 0.85;
+}
+
+.days .is-today b {
+  color: #4a2606;
+  font-weight: 700;
+}
+
+.days .is-past,
+.days .is-empty,
+.days .is-today {
+  box-shadow: none;
+}
+
+.days .is-past::before,
+.days .is-empty::before,
+.days .is-today::before {
+  transform: rotateY(-72deg);
+  opacity: 0.85;
+}
+
+
+.days .is-past {
+  background: radial-gradient(circle at 55% 60%, var(--ember), transparent 85%), var(--door-inside);
+}
+
+.days .is-today {
+  background: radial-gradient(circle at 55% 60%, #fff3dc, #ffc067 55%, #ff9a3a);
+  box-shadow: 0 0 14px 1px rgba(255, 160, 60, 0.55);
+}
+
+:root[data-theme='day'] .days .is-today {
+  box-shadow: 0 2px 8px -2px rgba(196, 110, 30, 0.55);
+}
+
+/* The one authored moment in the sheet: today's door swings open once. */
+.days .is-opening::before {
+  animation: door-open 1.1s 0.35s var(--ease-out) backwards;
+}
+
+@keyframes door-open {
+  from {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.card-days {
+  margin: 0;
+}
+
+.card-days .days {
+  margin-top: 14px;
+}
 
 @media (min-width: 760px) {
   .top {

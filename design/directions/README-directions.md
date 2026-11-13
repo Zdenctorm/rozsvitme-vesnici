@@ -19,6 +19,10 @@ Velikost hvězdy říká, kolik oken už v obci svítilo. V okolí čára spojuj
 
 ## D. Noční mapa ve 3D
 
-Druhé kolo podle majitele: skutečná mapa jako noční Apple Mapy, ne ilustrace. Domy stojí ve 3D, dnešní domeček svítí teple a kolem sebe rozlévá světlo na zem i na zdi sousedů. Při oddálení mapa plynule přejde na celé Česko, kde zbydou jen světla kalendářů a jemné hranice krajů, sousední státy zhasnou. Ovládání je jako v telefonu: hledání nahoře, spodní panel s rozmazaným pozadím, velké tlačítko Navigovat s výběrem Mapy.com, Google nebo Apple. Písmo Geist.
+Druhé kolo podle majitele: skutečná mapa jako noční Apple Mapy, ne ilustrace. Majitel ho 13. listopadu 2026 vybral, směry A, B a C odmítl jako příliš ilustrativní. Závazný popis je v `DESIGN.md` v kořeni repa.
 
-Je to živý prototyp, ne obrázek: `npx vite`, pak `/design/directions/d-3d/index.html?scene=republika`. Scény jsou republika, vesnice, karta, navigovat, pred a let. Snímky a video vyrobí `node design/directions/d-3d/render.mjs`. Rádlo je v prototypu posunuté do skutečného středu vesnice a dnešní domeček sedí na střeše nejbližšího domu, protože body ve fixtures jsou vymyšlené.
+Mapa se otevře tam, kde člověk stojí. Když do tří a půl vteřiny přijde poloha a do šesti kilometrů dnes něco svítí, ukáže okolí ve 3D. Když je nejbližší světlo dál, oddálí se k němu a napíše třeba „Nejblíž svítí Rádlo, 162 km“. Bez polohy zůstane celé Česko. Oddalovat jde plynule přes kraj a Česko až na Evropu a celou zeměkouli, kde svítí jen naše okénka.
+
+Přes den je mapa světlá a zimní a dnešní domeček má zavřená dvířka s číslem dne v teplém rámu. Se západem slunce v Praze mapa sama potemní, dvířka se otevřou a okno se rozsvítí. Uplynulé dny jsou malá pootevřená dvířka. Kolikátý je den, ukazuje řada 24 dvířek v panelu, ne věta. Časy rozsvícení se nikde neukazují. Písmo Bricolage Grotesque na nadpisy a čísla, Instrument Sans na text.
+
+Je to živý prototyp: `npx vite`, pak `/design/directions/d-3d/index.html`. Bez parametru se zeptá na polohu. Pevné scény přes `?scene=` jsou republika, vesnice, karta, navigovat, pred, evropa, zeme, den, den-republika, znacka, let a soumrak. Snímky a obě videa vyrobí `node design/directions/d-3d/render.mjs`. Rádlo je v prototypu posunuté do skutečného středu vesnice a domečky sedí na střeše nejbližšího domu, protože body ve fixtures jsou vymyšlené.

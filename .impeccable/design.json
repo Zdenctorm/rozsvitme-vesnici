@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T20:30:00Z",
+  "title": "Design System: Adventní okénka",
+  "extensions": {
+    "colorMeta": {
+      "candle": { "role": "primary", "displayName": "Candle Amber", "canonical": "#ffb24d", "tonalRamp": ["#3a1f05", "#6b3a0c", "#9a520c", "#d07a1f", "#ffa83a", "#ffc067", "#ffd28a", "#fff0d2"] },
+      "door-frame": { "role": "primary", "displayName": "Door Frame", "canonical": "#e0892e" },
+      "you-blue": { "role": "secondary", "displayName": "You Blue", "canonical": "#3d8bff" },
+      "night-ground": { "role": "neutral", "displayName": "Night Ground", "canonical": "#070b14", "tonalRamp": ["#02040a", "#070b14", "#0e1629", "#1a2236", "#27334f", "#3b4868", "#7c869b", "#f2f4f8"] },
+      "day-ground": { "role": "neutral", "displayName": "Snow Ground", "canonical": "#e8ecf1", "tonalRamp": ["#161c28", "#485164", "#5f6879", "#8f9bae", "#b7c0ce", "#d5dbe3", "#e8ecf1", "#ffffff"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "House name on the open card. Bricolage Grotesque." },
+      "door-number": { "displayName": "Door number", "purpose": "Day number on the house door and in the 24 door strip." },
+      "body": { "displayName": "Body", "purpose": "Rows and search. Instrument Sans." }
+    },
+    "shadows": [
+      { "name": "float", "value": "inset 0 0.5px 0 rgba(255,255,255,0.1), 0 10px 30px -8px rgba(0,0,0,0.6)", "purpose": "Frosted sheet, search and locate at night." },
+      { "name": "float-day", "value": "inset 0 0.5px 0 rgba(255,255,255,0.9), 0 10px 30px -10px rgba(30,44,70,0.28)", "purpose": "Same surfaces by day." },
+      { "name": "candle", "value": "0 0 22px 4px rgba(255,150,50,0.6)", "purpose": "Only an open, lit door." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Door swing, sheet and chooser." },
+      { "name": "dusk", "value": "3.2s cubic-bezier(0.65, 0, 0.35, 1)", "purpose": "Day to night palette at sunset in Prague." },
+      { "name": "door-swing", "value": "1.6s", "purpose": "House door opening at dusk." },
+      { "name": "breath", "value": "3.4s sine", "purpose": "Ground light pool of a lit window." }
+    ],
+    "breakpoints": [{ "name": "wide", "value": "760px" }]
+  },
+  "components": [
+    {
+      "name": "House door, day",
+      "kind": "custom",
+      "refersTo": "house-door-day",
+      "description": "Today's house before sunset: a shut advent door with its number.",
+      "html": "<span class=\"ds-door\"><span class=\"ds-leaf\"></span><b>12</b></span>",
+      "css": ".ds-door{position:relative;display:grid;place-items:center;width:34px;height:40px;border-radius:11px 11px 5px 5px;background:#3a2a1c;box-shadow:0 0 0 2px #e0892e,0 6px 14px -6px rgba(0,0,0,.6);perspective:120px}.ds-leaf{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0) 38%),#fbefdc;transform-origin:0 50%;transition:transform 1.6s cubic-bezier(.22,1,.36,1)}.ds-door b{position:relative;font:650 17px 'Bricolage Grotesque',sans-serif;color:#7a4210}.ds-door:hover .ds-leaf{transform:rotateY(-74deg)}"
+    },
+    {
+      "name": "House door, lit",
+      "kind": "custom",
+      "refersTo": "house-door-lit",
+      "description": "After sunset: the door stands open and the window glows.",
+      "html": "<span class=\"ds-door-lit\"><span class=\"ds-leaf-open\"></span><b>12</b></span>",
+      "css": ".ds-door-lit{position:relative;display:grid;place-items:center;width:34px;height:40px;border-radius:11px 11px 5px 5px;background:radial-gradient(circle at 55% 58%,#fff6e4,#ffc46e 52%,#ff9636);box-shadow:0 0 0 1.5px #ffd28a,0 0 22px 4px rgba(255,150,50,.6);perspective:120px}.ds-leaf-open{position:absolute;inset:0;border-radius:inherit;background:#fbefdc;transform-origin:0 50%;transform:rotateY(-74deg)}.ds-door-lit b{position:relative;font:650 17px 'Bricolage Grotesque',sans-serif;color:#4a2606}"
+    },
+    {
+      "name": "Navigovat",
+      "kind": "button",
+      "refersTo": "button-navigate",
+      "description": "The one primary action on a house card.",
+      "html": "<button class=\"ds-cta\">Navigovat</button>",
+      "css": ".ds-cta{width:100%;height:56px;border:0;border-radius:16px;background:linear-gradient(180deg,#ffc067,#ffa83a);color:#1c1206;font:650 18px 'Instrument Sans',sans-serif;box-shadow:0 8px 24px -8px rgba(255,150,40,.6),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .15s,filter .15s}.ds-cta:hover{filter:brightness(1.05)}.ds-cta:active{transform:scale(.985)}.ds-cta:focus-visible{outline:2px solid #ffd28a;outline-offset:2px}"
+    },
+    {
+      "name": "Search",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Find a municipality.",
+      "html": "<label class=\"ds-search\"><input placeholder=\"Najít obec\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;height:48px;padding:0 16px;border-radius:16px;background:rgba(16,21,33,.74);backdrop-filter:blur(22px) saturate(170%)}.ds-search input{flex:1;border:0;background:none;outline:0;color:#f2f4f8;font:400 17px 'Instrument Sans',sans-serif;caret-color:#ffb24d}.ds-search:focus-within{box-shadow:inset 0 0 0 1px rgba(255,210,138,.35)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Window Left Open on a Winter Night",
+    "overview": "Direction D is binding: a real 3D map, darkness as the canvas and warm candle light as the only bright thing. The advent calendar is carried by the little door with a day number. By day a pale winter map; at sunset in Prague the map darkens, the doors open and the windows glow. Zooming out is continuous to the globe.",
+    "keyCharacteristics": ["A real 3D map, not an illustration.", "Warm light means a window of an advent calendar, and nothing else is warm.", "The day number lives on the door, never in a sentence.", "Day and night switch by the sun in Prague, never by the system theme.", "One continuous zoom from a doorstep to the globe."],
+    "rules": [
+      { "name": "The One Warm Light Rule", "body": "Warm hues mark advent windows only.", "section": "colors" },
+      { "name": "The Sky Clock Rule", "body": "The palette is chosen by duskAt, the sunset in Prague for the date.", "section": "colors" },
+      { "name": "The Dusk Event Rule", "body": "Day mixes into night over 3.2 s while the doors open and glow fades in.", "section": "colors" },
+      { "name": "The No Counting Rule", "body": "No window numbers, countdowns or lighting times as text.", "section": "typography" },
+      { "name": "The Glass Has A Reason Rule", "body": "Frosted sheets keep the map readable under controls; no other glass.", "section": "elevation" }
+    ],
+    "dos": ["Do keep the night palette exactly as approved; day is a second palette, not a reinterpretation.", "Do put the day number on the door and in the strip, and nowhere in a sentence.", "Do switch day and night only at duskAt, the sunset in Prague, and animate it as one event.", "Do keep zooming continuous down to the globe, and keep panning free.", "Do respect reduced motion: no door swing, no breathing pool, instant dusk, camera jumps instead of flights.", "Do keep touch targets at least 44 px and text at least 4.5:1 on both palettes."],
+    "donts": ["Don't show lighting times, \"zhasne\", countdowns or window numbers as text.", "Don't use warm colour for anything that is not an advent window.", "Don't add Santa, clip art stars, red and green, snowflake emoji or falling snow; winter shows as frost on shut doors and a pale snowy day map.", "Don't return to the illustrative looks of A, B and C, or to Geist, Inter, Roboto, Poppins, Montserrat, DM Sans or Space Grotesk.", "Don't let neighbouring countries go pitch black; they sit under a light veil so the zoom out stays one move."]
+  }
+}

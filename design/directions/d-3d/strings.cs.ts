@@ -1,16 +1,9 @@
 /**
  * Czech copy of the 3D night map prototype, kept in one place for review.
  * Every string passed the anti-ai-slop-cz skill: no parentheses, no long dashes.
+ * No window numbers and no lighting times: the advent day shows in the door strip,
+ * and hosts light up in the afternoon, so people come whenever they like.
  */
-
-/** Czech plural: one, two to four, five and more. */
-export function plural(n: number, one: string, few: string, many: string): string {
-  if (n === 1) return one;
-  if (n >= 2 && n <= 4) return few;
-  return many;
-}
-
-const okenek = (n: number) => plural(n, 'okénko', 'okénka', 'okének');
 
 export const t = {
   pageTitle: 'Adventní okénka',
@@ -20,25 +13,28 @@ export const t = {
   close: 'Zavřít',
 
   tonightTitle: 'Dnešní okénka',
-  tonightCount: (n: number) => `${n} ${plural(n, 'kalendář', 'kalendáře', 'kalendářů')} v Česku`,
+  /** House shown during the day, before sunset. */
+  today: 'Dnes',
+  /** House after sunset. */
+  lit: 'Svítí',
+  nearestLit: (place: string, distance: string) => `Nejblíž svítí ${place}, ${distance}`,
+  nearestToday: (place: string, distance: string) => `Dnes nejblíž ${place}, ${distance}`,
 
-  windowOf: (n: number, calendar: string) => `${n}. okénko, ${calendar}`,
-  litUntil: (time: string) => `Svítí do ${time}`,
-  litFrom: (time: string) => `Rozsvítí se v ${time}`,
-  litShort: 'Svítí',
-  walk: (min: number) => `pěšky ${min} min`,
-  pastSoFar: (n: number) => `V tomhle kalendáři už ${plural(n, 'svítilo', 'svítila', 'svítilo')} ${n} ${okenek(n)}.`,
-  secret: 'Zítřejší okénko se na mapě ukáže zítra v osm ráno.',
+  /** Captions of the door close-up. */
+  stateToday: 'Dnes přes den',
+  stateDusk: 'Při západu slunce',
+  statePast: 'Doutná',
+
+  /** Read aloud for the door strip, never shown. */
+  dayLabel: (day: number) => `Dnes je ${day}. prosince`,
+  dayBefore: 'Advent začne 1. prosince',
 
   navigate: 'Navigovat',
   navApps: { mapy: 'Mapy.com', google: 'Google Mapy', apple: 'Apple Mapy' },
   navSub: 'Vyberte aplikaci, trasa se otevře pro chůzi.',
   cancel: 'Zrušit',
 
-  countdownBig: (days: number) => `Za ${days} ${plural(days, 'den', 'dny', 'dní')}`,
-  countdownSub: 'První okénka se rozsvítí v úterý 1. prosince.',
-  waitingTitle: (n: number) =>
-    `${plural(n, 'Chystá se', 'Chystají se', 'Chystá se')} ${n} ${plural(n, 'kalendář', 'kalendáře', 'kalendářů')}`,
-  windowsWord: (n: number) => okenek(n),
+  waitingTitle: 'První okénka se rozsvítí 1. prosince',
+  waitingList: 'Chystají se',
   surprise: 'Kde které okénko svítí, uvidíte vždy až v jeho den.',
 } as const;
