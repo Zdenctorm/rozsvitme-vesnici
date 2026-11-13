@@ -21,6 +21,9 @@ The person who creates and edits a **Kalendář**. Logs in with an email magic l
 **Svítí**, `lit`:
 A **Domeček** is lit on its **Okénko** day during the calendar's lighting hours. Default lighting hours are set per calendar and editable.
 
+**Dnes**, `today`:
+A **Domeček** on its **Okénko** day outside lighting hours: visible from 08:00 at its exact point with navigation, not yet glowing, and after lighting hours until Prague midnight.
+
 **Doutná**, `past`:
 A **Domeček** whose **Okénko** is over. Stays on the map as a faint light at its exact point until 24 Dec. All data is deleted in January 2027.
 
