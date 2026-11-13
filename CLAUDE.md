@@ -11,3 +11,13 @@ The owner rejects anything that looks cheap or AI-generated. Before any UI or co
 - **Design:** load the `impeccable` skill before any UI edit. Every UI change ends with `impeccable critique` and `impeccable audit` on screenshots at 390 px wide.
 - **Czech copy:** every user-facing Czech string passes the `anti-ai-slop-cz` skill. No parentheses, no long dashes.
 - **Approval:** the visual direction is chosen by the owner from rendered variants before features are built on it.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues in `Zdenctorm/rozsvitme-vesnici`. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
