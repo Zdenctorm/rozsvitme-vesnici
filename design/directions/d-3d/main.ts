@@ -182,12 +182,12 @@ function esc(s: string): string {
 }
 
 /**
- * The house mark: a small advent calendar door with its day number.
- * By day it is shut with a warm frame; after sunset it stands open and the window glows;
- * past days are small dim open doors. The number stays readable in every state.
+ * The house mark: a round light with its day number.
+ * By day a calm disc in a warm ring; from sunset the disc glows with a soft halo;
+ * past days are small dim discs. The number stays crisp in every state.
  */
-function doorMark(day: number, state: SnapshotHouse['state'], size: 'pin' | 'row' | 'past'): string {
-  return `<span class="door door-${size} is-${state}" aria-hidden="true"><span class="door-leaf"></span><b>${day}</b></span>`;
+function lightMark(day: number, state: SnapshotHouse['state'], size: 'pin' | 'sheet' | 'row' | 'past'): string {
+  return `<span class="mark mark-${size} is-${state}" aria-hidden="true"><b>${day}</b></span>`;
 }
 
 const CLOSE_ICON = '<svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" /></svg>';
@@ -195,8 +195,8 @@ const CHEVRON = '<svg class="icon chev" viewBox="0 0 20 20" aria-hidden="true"><
 const ARROW_OUT = '<svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 13 13.5 6.5M8 6h6v6" /></svg>';
 
 /**
- * Advent day strip: 24 small windows, today glowing. Replaces any "12. okénko" copy.
- * With a calendar, past days that had a house smoulder and empty days stay hollow.
+ * Advent day strip: 24 small round lights, today glowing. Replaces any "12. okénko" copy.
+ * With a calendar, past days that had a house glow dimly and empty days stay dark.
  * Days after today all look alike, so the strip never tells what comes tomorrow.
  */
 function dayStrip(calendarId?: string): string {
@@ -238,7 +238,7 @@ function renderSheet(next: SheetMode) {
   } else if (next.kind === 'peek') {
     const h = next.house;
     sheetBody.innerHTML = `<button class="peek" type="button" data-open="${h.id}">
-      <span class="peek-mark">${doorMark(h.window, h.state, 'pin')}</span>
+      <span class="peek-mark">${lightMark(h.window, h.state, 'sheet')}</span>
       <span class="peek-text"><span class="peek-title">${esc(h.label)}</span>
       <span class="meta"><span class="live is-${h.state}">${esc(statusOf(h))}</span><span>${esc(calendarOf(h).municipality)}</span>${distanceSpan(h.point)}</span></span>
     </button>`;
@@ -274,7 +274,7 @@ function renderSheet(next: SheetMode) {
 function houseRow(h: SnapshotHouse): string {
   const c = calendarOf(h);
   return `<li><button class="row" data-house="${h.id}" type="button">
-    ${doorMark(h.window, h.state, 'row')}
+    ${lightMark(h.window, h.state, 'row')}
     <span class="row-text"><span class="row-title">${esc(h.label)}</span>
     <span class="row-sub">${esc(c.municipality)}${user ? `, ${fmtDistance(away(h.point))}` : ''}</span></span>
     <span class="row-state ${h.state === 'lit' ? 'is-lit' : 'is-today'}">${statusOf(h)}</span>
@@ -460,11 +460,16 @@ async function lightUp(ms = 2400) {
     const el = markers.get(h.id)?.getElement();
     el?.classList.replace('is-today', 'is-lit');
     el?.setAttribute('aria-label', `${h.label}, ${statusOf(h)}`);
-    el?.querySelector('.door')?.classList.replace('is-today', 'is-lit');
+    el?.querySelector('.mark')?.classList.replace('is-today', 'is-lit');
   }
   (map.getSource('tonight') as GeoJSONSource).setData(tonightData());
   (map.getSource('calendars') as GeoJSONSource).setData(calendarData());
   renderSheet(mode);
+  // The sheet is rebuilt lit, so start its marks from the day disc and let them fade into the glow too.
+  const sheetMarks = [...sheetBody.querySelectorAll('.mark.is-lit')];
+  for (const m of sheetMarks) m.classList.replace('is-lit', 'is-today');
+  void sheetBody.offsetWidth;
+  for (const m of sheetMarks) m.classList.replace('is-today', 'is-lit');
   lightBuildings();
   await tween(ms, (k) => {
     lightK = k;
@@ -818,18 +823,18 @@ function addMarkers() {
     el.type = 'button';
     el.className = `pin ${h.state === 'lit' ? 'is-lit' : 'is-today'}`;
     el.setAttribute('aria-label', `${h.label}, ${statusOf(h)}`);
-    el.innerHTML = `<span class="pin-inner"><span class="pin-head">${doorMark(h.window, h.state, 'pin')}<span class="pin-label">${esc(h.label)}</span></span><span class="pin-stem" aria-hidden="true"></span><span class="pin-dot" aria-hidden="true"></span></span>`;
+    el.innerHTML = `<span class="pin-inner"><span class="pin-head">${lightMark(h.window, h.state, 'pin')}<span class="pin-label">${esc(h.label)}</span></span><span class="pin-stem" aria-hidden="true"></span><span class="pin-dot" aria-hidden="true"></span></span>`;
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       renderSheet({ kind: 'card', house: h });
     });
     markers.set(h.id, new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat(ll(h.point)).addTo(map));
   }
-  // Past houses: small dim open doors with their day, shown only close in.
+  // Past houses: small dim discs with their day, shown only close in.
   for (const h of past) {
     const el = document.createElement('div');
     el.className = 'pin pin-past';
-    el.innerHTML = `<span class="pin-inner">${doorMark(h.window, 'past', 'past')}<span class="pin-stem" aria-hidden="true"></span></span>`;
+    el.innerHTML = `<span class="pin-inner">${lightMark(h.window, 'past', 'past')}<span class="pin-stem" aria-hidden="true"></span></span>`;
     new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat(ll(h.point)).addTo(map);
   }
   placeMe();
@@ -1007,7 +1012,7 @@ function initialSheet(): SheetMode {
 
 renderSheet(initialSheet());
 
-/** Close-up of the house door in its states, for the design record. */
+/** Close-up of the house light in its states, for the design record. */
 if (scene === 'znacka') {
   const tiles: [string, string, string, number][] = [
     ['day', 'today', t.stateToday, 12],
@@ -1020,7 +1025,7 @@ if (scene === 'znacka') {
   el.innerHTML = tiles
     .map(
       ([sky, state, name, day]) => `<figure class="spec spec-${sky}" data-theme="${sky === 'day' ? 'day' : 'night'}">
-        <span class="spec-pin pin is-${state === 'lit' ? 'lit' : 'today'}">${doorMark(day, state as SnapshotHouse['state'], state === 'past' ? 'past' : 'pin')}<span class="pin-stem"></span>${state === 'past' ? '' : '<span class="pin-dot"></span>'}</span>
+        <span class="spec-pin pin is-${state === 'lit' ? 'lit' : 'today'}">${lightMark(day, state as SnapshotHouse['state'], state === 'past' ? 'past' : 'pin')}<span class="pin-stem"></span>${state === 'past' ? '' : '<span class="pin-dot"></span>'}</span>
         <figcaption>${name}</figcaption></figure>`,
     )
     .join('');

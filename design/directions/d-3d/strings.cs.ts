@@ -1,7 +1,7 @@
 /**
  * Czech copy of the 3D night map prototype, kept in one place for review.
  * Every string passed the anti-ai-slop-cz skill: no parentheses, no long dashes.
- * No window numbers and no lighting times: the advent day shows in the door strip,
+ * No window numbers and no lighting times: the advent day shows in the day strip,
  * and hosts light up in the afternoon, so people come whenever they like.
  */
 
@@ -20,12 +20,12 @@ export const t = {
   nearestLit: (place: string, distance: string) => `Nejblíž svítí ${place}, ${distance}`,
   nearestToday: (place: string, distance: string) => `Dnes nejblíž ${place}, ${distance}`,
 
-  /** Captions of the door close-up. */
+  /** Captions of the house light close-up. */
   stateToday: 'Dnes přes den',
   stateDusk: 'Při západu slunce',
   statePast: 'Doutná',
 
-  /** Read aloud for the door strip, never shown. */
+  /** Read aloud for the day strip, never shown. */
   dayLabel: (day: number) => `Dnes je ${day}. prosince`,
   dayBefore: 'Advent začne 1. prosince',
 
